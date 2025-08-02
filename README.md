@@ -36,12 +36,13 @@ This is an updated version for ``zjr_api`` to improve features and fix bugs (v1.
 - Eliminate asynchrony and simple code style
 - Set fixed listen delay to 0s
 - The code is easier to understand, the structure is separate from one line as before.
-- Send jobs to users
-- Send voice call to person
-- Create new group link
-- Disable the current group link 
-- Unfriend user
-- Get your own QR code
+- [Send jobs to users[GET]](#send-to-do)
+- [Send voice call to person[GET]](#send-call)
+- [Create new group link[GET]](#new-link)
+- [Disable the current group link[GET]](#disable-link)
+- [Unfriend user[GET]](#unfriend-user)
+- [Get your own QR code[GET]](#fetch-user-link)
+- [Send image by direct url[GET]](#send-image-by-url)
 
 </br>
 
@@ -1156,6 +1157,33 @@ self.sendRemoteVoice(
 
 <!-- END sendRemoteVoice -->
 
+<!-- sendImageByUrl -->
+
+### Send Local Image
+
+This function will Send Image to a User/Group with local file.
+
+> - Args:
+>	- image_url (str | list): Image directory to send
+>	- thread_id (int | str): User/Group ID to send to.
+>	- thread_type (ThreadType): ``ThreadType.USER``, ``ThreadType.GROUP``
+>	- width (int | list): Image width to send
+>	- height (int | list): Image height to send
+>	- message (str | list): message to send with image
+
+```py 
+self.sendImageByUrl(
+	<image_url>, 
+	<thread_id>, 
+	<thread_type>,
+	<width>,
+	<height>
+)
+```
+</br>
+
+<!-- END sendImageByUrl -->
+
 <!-- sendLocalImage -->
 
 ### Send Local Image
@@ -1168,7 +1196,7 @@ This function will Send Image to a User/Group with local file.
 >	- thread_type (ThreadType): ``ThreadType.USER``, ``ThreadType.GROUP``
 >	- width (int): Image width to send
 >	- height (int): Image height to send
->	- message (Message): ``Message Object`` to send with image
+>	- message (str): message to send with image
 
 ```py 
 self.sendLocalImage(
