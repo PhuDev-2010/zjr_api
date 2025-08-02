@@ -4470,7 +4470,123 @@ class ZaloAPI(object):
 		raise ZaloAPIException(
 			f"Error #{error_code} when sending requests: {error_message}"
 		)
-	
+
+	def sendImageByUrl(
+		self,
+		image_url: str | list,
+		thread_id,
+		thread_type,
+		width=2560,
+		height=2560,
+		message=None,
+		ttl=0
+	):
+		"""Send one or more images via direct URL to a User/Group.
+
+		Args:
+			image_url (str | list): A single URL or list of image URLs
+			thread_id (int | str): User or Group ID
+			thread_type (ThreadType): ThreadType.USER or ThreadType.GROUP
+			width (int | list): Width(s)
+			height (int | list): Height(s)
+			message (Message | list | None): Message(s)
+			ttl (int | list): TTL(s)
+
+		Returns:
+			list: List of User or Group objects
+		"""
+		if isinstance(image_url, str):
+			image_url = [image_url]
+		if not isinstance(width, list):
+			width = [width] * len(image_url)
+		if not isinstance(height, list):
+			height = [height] * len(image_url)
+		if not isinstance(ttl, list):
+			ttl = [ttl] * len(image_url)
+		if not isinstance(message, list):
+			message = [message] * len(image_url)
+
+		results = []
+
+		for i, url_image in enumerate(image_url):
+			desc = message[i].text if message[i] and hasattr(message[i], "text") else ""
+
+			params = {
+				"zpw_ver": 645,
+				"zpw_type": 30,
+				"nretry": 0
+			}
+
+			payload = {
+				"params": {
+					"photoId": int(_util.now() * 2),
+					"clientId": int(_util.now() - 1000),
+					"desc": desc,
+					"width": width[i],
+					"height": height[i],
+					"rawUrl": url_image,
+					"thumbUrl": url_image,
+					"hdUrl": url_image,
+					"thumbSize": "53932",
+					"fileSize": "247671",
+					"hdSize": "344622",
+					"zsource": -1,
+					"jcp": json.dumps({"sendSource": 1, "convertible": "jxl"}),
+					"ttl": ttl[i],
+					"imei": self._imei
+				}
+			}
+
+			if message[i] and getattr(message[i], "mention", None):
+				payload["params"]["mentionInfo"] = message[i].mention
+
+			if thread_type == ThreadType.USER:
+				url = "https://tt-files-wpa.chat.zalo.me/api/message/photo_original/send"
+				payload["params"]["toid"] = str(thread_id)
+				payload["params"]["normalUrl"] = url_image
+			elif thread_type == ThreadType.GROUP:
+				url = "https://tt-files-wpa.chat.zalo.me/api/group/photo_original/send"
+				payload["params"]["grid"] = str(thread_id)
+				payload["params"]["oriUrl"] = url_image
+			else:
+				raise ZaloUserError("Thread type is invalid")
+
+			payload["params"] = self._encode(payload["params"])
+
+			response = self._post(url, params=params, data=payload)
+			data = response.json()
+			data_content = data.get("data") if data.get("error_code") == 0 else None
+
+			if data_content:
+				decoded = self._decode(data_content)
+				decoded = decoded.get("data") if decoded.get("data") else decoded
+
+				if decoded is None:
+					decoded = {
+						"error_code": 1337,
+						"error_message": "Data is None"
+					}
+
+				if isinstance(decoded, str):
+					try:
+						decoded = json.loads(decoded)
+					except:
+						decoded = {
+							"error_code": 1337,
+							"error_message": decoded
+						}
+
+				obj = Group.fromDict(decoded, None) if thread_type == ThreadType.GROUP else User.fromDict(decoded, None)
+				results.append(obj)
+			else:
+				error_code = data.get("error_code")
+				error_message = data.get("error_message") or data.get("data")
+				raise ZaloAPIException(
+					f"Error #{error_code} when sending image {i + 1}: {error_message}"
+				)
+
+		return results
+
 	def sendLocalImage(
 		self, 
 		imagePath, 
