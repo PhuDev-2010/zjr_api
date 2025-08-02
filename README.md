@@ -37,12 +37,12 @@ This is an updated version for ``zjr_api`` to improve features and fix bugs (v1.
 - Set fixed listen delay to 0s
 - The code is easier to understand, the structure is separate from one line as before.
 - Send jobs to users[GET](#send-to-do)
-- [Send voice call to person[GET]](#send-call)
-- [Create new group link[GET]](#new-link)
-- [Disable the current group link[GET]](#disable-link)
-- [Unfriend user[GET]](#unfriend-user)
-- [Get your own QR code[GET]](#fetch-user-link)
-- [Send image by direct url[GET]](#send-image-by-url)
+- Send voice call to person[GET](#send-call)
+- Create new group link[GET](#new-link)
+- Disable the current group link[GET](#disable-link)
+- Unfriend user[GET](#unfriend-user)
+- Get your own QR code[GET](#fetch-user-link)
+- Send image by direct url[GET](#send-image-by-url)
 
 </br>
 
