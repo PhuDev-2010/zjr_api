@@ -3,7 +3,7 @@ from pathlib import Path
 from setuptools import find_packages, setup
 
 
-VERSION = "1.0.2"
+VERSION = "1.0.0"
 DESCRIPTION = "Python library for interacting with Zalo."
 
 
