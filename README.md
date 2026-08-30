@@ -1,7 +1,3 @@
-Bạn nói đúng! Tôi sẽ tạo một file README.md đầy đủ với TẤT CẢ các hàm từ file _client.py của bạn. Dưới đây là bản hoàn chỉnh:
-
----
-
 🟦 ZaloAPI - Python Client for Zalo Chat (zjr_api)
 
 https://img.shields.io/badge/Python-3.8+-blue.svg
@@ -1360,10 +1356,11 @@ Contributions are welcome! Please submit a Pull Request.
 
 📞 Contact
 
-· 💬 Zalo: PhuDev
+· 💬 Zalo: www.zalo.me/0816262451
+· 🖍️ Facebook: www.facebook.com/lmphudev
 · 📧 Email: phudev2010@gmail.com
 · 🐛 Issues: GitHub Issues
-· 📚 GitHub: PhuDev-2010/zjr_api
+· 📚 GitHub: PhuDev-2010
 
 ---
 
